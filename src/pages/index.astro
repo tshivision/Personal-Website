@@ -1,0 +1,16 @@
+---
+import Base from '../layouts/Base.astro';
+import Hero from '../components/Hero.astro';
+import FeaturedCard from '../components/FeaturedCard.astro';
+import ResourceGrid from '../components/ResourceGrid.astro';
+import EmailSignup from '../components/EmailSignup.astro';
+import { featured } from '../lib/resources';
+---
+<Base backLink={false}>
+  <div class="wrap">
+    <Hero />
+    {featured && <FeaturedCard resource={featured} />}
+    <ResourceGrid />
+    <EmailSignup />
+  </div>
+</Base>

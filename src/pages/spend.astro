@@ -1,0 +1,68 @@
+---
+import Base from '../layouts/Base.astro';
+const TOOL_URL = 'https://spend-dashboard-gilt.vercel.app';
+const features = [
+  { title: 'Drop in your bank CSV', text: 'Export transactions from your bank, drag the file in, and get a full picture in seconds.' },
+  { title: 'Click to drill in', text: 'Tap any category or month to see exactly which purchases are behind the number.' },
+  { title: 'See spending by place', text: 'Great if you move around: compare what life actually costs city by city.' },
+  { title: '100% private', text: 'Everything runs in your browser. Your transactions are never uploaded to a server.' },
+];
+---
+<Base title="Spend dashboard" description="A free, private dashboard that shows where your money actually goes. Drop in your bank CSV and see it in minutes.">
+  <article class="wrap page">
+    <p class="eyebrow">Free tool · Money</p>
+    <h1>See where your money actually goes</h1>
+    <p class="lede">
+      Spend turns your messy bank export into a clear dashboard in about five minutes. No sign-up, no
+      app to install, and your data never leaves your device.
+    </p>
+
+    <a class="btn btn--block cta" href={TOOL_URL} target="_blank" rel="noopener">
+      Open the Spend dashboard <span aria-hidden="true">↗</span><span class="sr-only">(opens in new tab)</span>
+    </a>
+    <p class="hint">No data handy? Try it with the built-in sample data first.</p>
+
+    <h2>What it does</h2>
+    <ul class="features">
+      {features.map((f) => (
+        <li>
+          <h3>{f.title}</h3>
+          <p>{f.text}</p>
+        </li>
+      ))}
+    </ul>
+
+    <h2>Who it's for</h2>
+    <div class="prose">
+      <ul>
+        <li>You earn well but can't say where it all goes each month</li>
+        <li>You live or travel across countries and want to compare real costs</li>
+        <li>You want budgeting clarity without linking your bank to yet another app</li>
+      </ul>
+    </div>
+
+    <a class="btn btn--block cta" href={TOOL_URL} target="_blank" rel="noopener">
+      Try Spend free <span aria-hidden="true">↗</span><span class="sr-only">(opens in new tab)</span>
+    </a>
+  </article>
+</Base>
+
+<style>
+  .page { padding-top: 1.5rem; }
+  h1 { font-size: clamp(2.25rem, 10vw, 3rem); margin-top: 0.5rem; }
+  .lede { font-size: 1.125rem; color: var(--ink-2); margin-top: 0.9rem; }
+  .cta { margin-top: 1.75rem; }
+  .hint { font-size: 0.875rem; color: var(--ink-3); margin-top: 0.6rem; text-align: center; }
+  h2 { font-size: 1.5rem; margin-top: 2.75rem; }
+  .features { list-style: none; padding: 0; margin: 1rem 0 0; display: grid; gap: 0.75rem; }
+  .features li {
+    padding: 1.1rem 1.25rem;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+  }
+  .features h3 { font-size: 1.125rem; }
+  .features p { color: var(--ink-2); margin-top: 0.25rem; font-size: 0.9375rem; }
+  .prose { margin-top: 0.5rem; }
+  @media (min-width: 34rem) { .features { grid-template-columns: 1fr 1fr; } }
+</style>

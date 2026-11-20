@@ -1,0 +1,70 @@
+---
+import { hrefFor, type Resource } from '../lib/resources';
+interface Props { resource: Resource }
+const { resource: r } = Astro.props;
+const href = hrefFor(r);
+const external = r.type === 'external';
+const Tag = href ? 'a' : 'div';
+const linkProps = href
+  ? { href, ...(external ? { target: '_blank', rel: 'noopener' } : {}) }
+  : {};
+---
+<li class="item" data-tag={r.tag}>
+  <Tag class:list={['card', { 'card--soon': !href }]} {...linkProps}>
+    <img src={r.thumbnail} alt="" width="56" height="56" class="thumb" loading="lazy" />
+    <span class="body">
+      <span class="title">{r.title}</span>
+      <span class="sub">{r.subtitle}</span>
+      <span class="meta">
+        {r.tag}
+        {!href && <span class="badge">Coming soon</span>}
+        {href && external && <span class="sr-only">(opens in new tab)</span>}
+      </span>
+    </span>
+    {href && <span class="arrow" aria-hidden="true">{external ? '↗' : '→'}</span>}
+  </Tag>
+</li>
+
+<style>
+  .item { list-style: none; }
+  .card {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    min-height: 5.5rem;
+    padding: 1rem;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    text-decoration: none;
+    color: var(--ink);
+    transition: border-color 0.15s, transform 0.15s;
+  }
+  a.card:hover { border-color: var(--accent); }
+  a.card:active { transform: scale(0.99); }
+  .card--soon { background: transparent; border-style: dashed; border-color: var(--line-strong); }
+  .card--soon .thumb { opacity: 0.55; filter: grayscale(0.6); }
+  .thumb { flex: none; width: 3.5rem; height: 3.5rem; border-radius: var(--radius-sm); }
+  .body { display: flex; flex-direction: column; min-width: 0; flex: 1; }
+  .title { font: 600 1.125rem/1.25 var(--serif); }
+  .sub { font-size: 0.9375rem; color: var(--ink-2); line-height: 1.4; margin-top: 0.15rem; }
+  .meta {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.45rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+  .badge {
+    padding: 0.15rem 0.5rem;
+    border-radius: 999px;
+    background: var(--line);
+    color: var(--ink-2);
+    letter-spacing: 0.04em;
+  }
+  .arrow { flex: none; font-size: 1.25rem; color: var(--accent); }
+</style>

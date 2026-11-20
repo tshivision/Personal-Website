@@ -1,0 +1,87 @@
+---
+import { SITE } from '../site.config';
+
+interface Props {
+  id?: string;
+  heading?: string;
+  text?: string;
+  button?: string;
+  /** Optional label sent with the signup so you can segment (e.g. "ikigai"). */
+  interest?: string;
+}
+const {
+  id = 'signup',
+  heading = 'Get new freebies first',
+  text = 'One short email when I drop a new tool or exercise. No spam, unsubscribe anytime.',
+  button = 'Join the list',
+  interest,
+} = Astro.props;
+const connected = Boolean(SITE.emailFormAction);
+---
+<section class="signup" aria-labelledby={`${id}-title`}>
+  <h2 id={`${id}-title`}>{heading}</h2>
+  <p class="text">{text}</p>
+  <form
+    class="form"
+    method="post"
+    action={connected ? SITE.emailFormAction : '#'}
+    data-connected={String(connected)}
+  >
+    <label for={`${id}-email`} class="sr-only">Email address</label>
+    <input
+      id={`${id}-email`}
+      type="email"
+      name={SITE.emailFieldName}
+      autocomplete="email"
+      placeholder="you@example.com"
+      required
+    />
+    {interest && <input type="hidden" name="interest" value={interest} />}
+    <button type="submit" class="btn">{button}</button>
+  </form>
+  <p class="note" role="status" aria-live="polite"></p>
+</section>
+
+<script>
+  // Until a real form action is set in site.config.ts, don't pretend to subscribe anyone.
+  document.querySelectorAll<HTMLFormElement>('form[data-connected="false"]').forEach((form) => {
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const note = form.parentElement?.querySelector('.note');
+      if (note) note.textContent = 'Signups open very soon. Check back in a few days.';
+    });
+  });
+</script>
+
+<style>
+  .signup {
+    margin-top: 3rem;
+    padding: 1.75rem 1.5rem;
+    background: var(--accent-tint);
+    border-radius: var(--radius);
+  }
+  h2 { font-size: 1.5rem; }
+  .text { color: var(--ink-2); margin-top: 0.5rem; }
+  .form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+    margin-top: 1.25rem;
+  }
+  input[type='email'] {
+    min-height: 3.25rem;
+    padding: 0 1rem;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius-sm);
+    background: var(--card);
+    color: var(--ink);
+    font: 400 1rem var(--sans); /* 16px keeps iOS from zooming */
+  }
+  input[type='email']::placeholder { color: var(--ink-3); }
+  input[type='email']:focus-visible { outline: 3px solid var(--accent); outline-offset: 1px; border-color: var(--accent); }
+  .note:not(:empty) { margin-top: 0.75rem; font-size: 0.9375rem; font-weight: 500; color: var(--accent-hover); }
+  @media (min-width: 30rem) {
+    .form { flex-direction: row; }
+    input[type='email'] { flex: 1; min-width: 0; }
+  }
+</style>

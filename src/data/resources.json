@@ -1,0 +1,46 @@
+[
+  {
+    "id": "spend",
+    "title": "Spend dashboard",
+    "subtitle": "See where your money actually goes, in 5 minutes",
+    "tag": "Money",
+    "status": "live",
+    "type": "page",
+    "slug": "spend",
+    "thumbnail": "/thumbs/spend.svg",
+    "featured": true
+  },
+  {
+    "id": "odyssey",
+    "title": "Odyssey Plan",
+    "subtitle": "Design 3 versions of your next 5 years",
+    "tag": "Life Design",
+    "status": "coming-soon",
+    "type": "page",
+    "slug": "odyssey",
+    "thumbnail": "/thumbs/odyssey.svg",
+    "featured": false
+  },
+  {
+    "id": "ikigai",
+    "title": "Ikigai worksheet",
+    "subtitle": "Find the work that pays you and lights you up",
+    "tag": "Life Design",
+    "status": "coming-soon",
+    "type": "page",
+    "slug": "ikigai",
+    "thumbnail": "/thumbs/ikigai.svg",
+    "featured": false
+  },
+  {
+    "id": "nomad-kit",
+    "title": "Nomad starter kit",
+    "subtitle": "The cards, apps, and visas I use across 25+ countries",
+    "tag": "Travel",
+    "status": "coming-soon",
+    "type": "external",
+    "url": "",
+    "thumbnail": "/thumbs/travel.svg",
+    "featured": false
+  }
+]

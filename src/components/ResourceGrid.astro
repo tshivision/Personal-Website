@@ -1,0 +1,75 @@
+---
+import { resources, TAGS } from '../lib/resources';
+import ResourceCard from './ResourceCard.astro';
+
+// Full catalog (featured included, so every tag filters properly). Live first, then coming soon.
+const items = [...resources].sort((a, b) => Number(a.status !== 'live') - Number(b.status !== 'live'));
+const usedTags = TAGS.filter((t) => items.some((r) => r.tag === t));
+---
+<section class="resources" aria-labelledby="resources-title">
+  <h2 id="resources-title">Free resources</h2>
+
+  {usedTags.length > 1 && (
+    <div class="filters" role="group" aria-label="Filter by topic">
+      <button type="button" class="chip" data-filter="all" aria-pressed="true">All</button>
+      {usedTags.map((t) => (
+        <button type="button" class="chip" data-filter={t} aria-pressed="false">{t}</button>
+      ))}
+    </div>
+  )}
+
+  <ul class="grid" id="resource-list">
+    {items.map((r) => <ResourceCard resource={r} />)}
+  </ul>
+  <p class="sr-only" aria-live="polite" id="filter-status"></p>
+</section>
+
+<script>
+  const chips = document.querySelectorAll<HTMLButtonElement>('.chip[data-filter]');
+  const items = document.querySelectorAll<HTMLElement>('#resource-list > li');
+  const status = document.getElementById('filter-status');
+  chips.forEach((chip) =>
+    chip.addEventListener('click', () => {
+      const f = chip.dataset.filter;
+      chips.forEach((c) => c.setAttribute('aria-pressed', String(c === chip)));
+      let shown = 0;
+      items.forEach((li) => {
+        const match = f === 'all' || li.dataset.tag === f;
+        li.hidden = !match;
+        if (match) shown++;
+      });
+      if (status) status.textContent = `Showing ${shown} ${shown === 1 ? 'resource' : 'resources'}`;
+    })
+  );
+</script>
+
+<style>
+  .resources { margin-top: 3rem; }
+  h2 { font-size: 1.5rem; }
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1rem;
+  }
+  .chip {
+    min-height: 2.75rem;
+    padding: 0 1.1rem;
+    border: 1px solid var(--line-strong);
+    border-radius: 999px;
+    background: transparent;
+    color: var(--ink);
+    font: 500 0.9375rem/1 var(--sans);
+    cursor: pointer;
+    transition: background-color 0.15s, color 0.15s, border-color 0.15s;
+  }
+  .chip:hover { border-color: var(--ink); }
+  .chip[aria-pressed='true'] { background: var(--ink); border-color: var(--ink); color: var(--paper); }
+  .grid {
+    display: grid;
+    gap: 0.75rem;
+    margin: 1.25rem 0 0;
+    padding: 0;
+  }
+  .grid > [hidden] { display: none; }
+</style>

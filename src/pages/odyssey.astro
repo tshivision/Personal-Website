@@ -1,0 +1,30 @@
+---
+import Base from '../layouts/Base.astro';
+import ComingSoon from '../components/ComingSoon.astro';
+---
+<Base title="Odyssey Plan" description="Design 3 versions of your next 5 years with a guided Odyssey Plan. Coming soon from Tian Shi.">
+  <ComingSoon
+    id="odyssey"
+    title="Odyssey Plan"
+    lede="Design 3 versions of your next 5 years, then pick the one worth testing."
+    bullets={[
+      'A guided template for your three 5-year plans',
+      'Gut-check gauges: resources, confidence, excitement, and fit',
+      'A way to prototype your favorite plan in the next 30 days, cheaply',
+    ]}
+  >
+    <p>
+      Instead of hunting for the one right life, you sketch three: the path you're on, the one you'd take
+      if that path vanished, and the one you'd live if money and judgment didn't matter. Seeing them side
+      by side makes your next move much clearer.
+    </p>
+    <p class="credit">
+      Based on the Odyssey Plan exercise from <cite>Designing Your Life</cite> by Bill Burnett and Dave
+      Evans. This is my own version, adapted for nomads and anyone rethinking money and work.
+    </p>
+  </ComingSoon>
+</Base>
+
+<style>
+  .credit { font-size: 0.9375rem; color: var(--ink-3); border-left: 2px solid var(--line-strong); padding-left: 0.9rem; }
+</style>

@@ -1,0 +1,21 @@
+---
+import Base from '../layouts/Base.astro';
+import ComingSoon from '../components/ComingSoon.astro';
+---
+<Base title="Ikigai worksheet" description="A guided Ikigai worksheet to find work that pays you and lights you up. Coming soon from Tian Shi.">
+  <ComingSoon
+    id="ikigai"
+    title="Ikigai worksheet"
+    lede="Find the overlap between what you love, what you're good at, what the world needs, and what pays."
+    bullets={[
+      'A printable worksheet with prompts for each of the four circles',
+      'My own filled-in example, so you can see how it works',
+      'A short exercise to turn your overlap into one next step this month',
+    ]}
+  >
+    <p>
+      Most Ikigai diagrams look nice and leave you with nothing to do. This one is a guided exercise:
+      about 30 minutes, honest prompts, and a clear next step at the end.
+    </p>
+  </ComingSoon>
+</Base>

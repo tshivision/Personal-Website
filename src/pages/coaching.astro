@@ -1,0 +1,53 @@
+---
+// Not linked from anywhere yet, and hidden from search. Share the URL directly when you're ready.
+import Base from '../layouts/Base.astro';
+import { SITE } from '../site.config';
+const topics = [
+  { title: 'Your money system', text: 'Spending, saving, and investing set up so it runs on autopilot, wherever you live.' },
+  { title: 'Going nomad', text: 'Visas, banking, what to ask a tax pro, and picking your first base without the guesswork.' },
+  { title: 'Your next 5 years', text: 'Use the Odyssey Plan to choose a direction, then design a cheap way to test it.' },
+];
+---
+<Base title="1:1 coaching" noindex description="1:1 coaching with Tian Shi on money, nomad life, and designing your next five years.">
+  <article class="wrap page">
+    <p class="eyebrow">1:1 coaching</p>
+    <h1>Design your next chapter, together</h1>
+    <p class="lede">
+      I'm a product designer with 5+ years in wealthtech, living as a nomad across 25+ countries. In a
+      1:1 session we'll apply the same design thinking to your money and your life.
+    </p>
+
+    <h2>What we'd work on</h2>
+    <ul class="topics">
+      {topics.map((t) => (
+        <li><h3>{t.title}</h3><p>{t.text}</p></li>
+      ))}
+    </ul>
+
+    <h2>Book an intro call</h2>
+    <p class="note">A free 20-minute call to see if we're a good fit.</p>
+    <div class="calendly-inline-widget" data-url={SITE.calendlyUrl}></div>
+    <noscript><a href={SITE.calendlyUrl}>Book on Calendly</a></noscript>
+  </article>
+  <script is:inline src="https://assets.calendly.com/assets/external/widget.js" async></script>
+</Base>
+
+<style>
+  .page { padding-top: 1.5rem; }
+  h1 { font-size: clamp(2.25rem, 10vw, 3rem); margin-top: 0.5rem; }
+  .lede { font-size: 1.125rem; color: var(--ink-2); margin-top: 0.9rem; }
+  h2 { font-size: 1.5rem; margin-top: 2.75rem; }
+  .topics { list-style: none; padding: 0; margin: 1rem 0 0; display: grid; gap: 0.75rem; }
+  .topics li { padding: 1.1rem 1.25rem; background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); }
+  .topics h3 { font-size: 1.125rem; }
+  .topics p { color: var(--ink-2); margin-top: 0.25rem; font-size: 0.9375rem; }
+  .note { color: var(--ink-2); margin-top: 0.4rem; }
+  .calendly-inline-widget {
+    min-width: 320px;
+    height: 720px;
+    margin: 1rem calc(var(--gutter) * -1) 0;
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: var(--card);
+  }
+</style>
