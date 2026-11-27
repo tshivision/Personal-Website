@@ -87,8 +87,11 @@ The site is a Vercel project connected to `github.com/tshivision/Personal-Websit
 
 | Type | Name | Value |
 | --- | --- | --- |
-| A | `@` | `76.76.21.21` |
-| CNAME | `www` | `cname.vercel-dns.com` |
+| A | `@` | `216.198.79.1` |
+| A | `@` | `64.29.17.1` |
+| CNAME | `www` | `ae59b0ea892b610a.vercel-dns-017.com` |
+
+`www.tianproductdesign.com` redirects to `tianproductdesign.com`. HTTPS certificates are issued by Vercel automatically.
 
 If Vercel ever shows different values under Project → Settings → Domains, use those.
 
