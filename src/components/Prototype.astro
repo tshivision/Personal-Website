@@ -1,0 +1,50 @@
+---
+// Figma prototype that only loads when asked (a Figma embed is several MB).
+interface Props { url: string; title: string; colors: [string, string] }
+const { url, title, colors } = Astro.props;
+const openUrl = new URL(url).searchParams.get('url') ?? url;
+---
+<div class="proto" data-proto={url} style={`--c1:${colors[0]};--c2:${colors[1]}`}>
+  <button type="button" class="poster">
+    <span class="play" aria-hidden="true">
+      <svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor"><path d="M8 5.5v13l11-6.5z"/></svg>
+    </span>
+    <span class="label">Try the interactive prototype</span>
+    <span class="sub">{title} · loads Figma</span>
+  </button>
+  <p class="open"><a class="link" href={openUrl} target="_blank" rel="noopener">Open in Figma ↗</a></p>
+</div>
+
+<script>
+  document.addEventListener('astro:page-load', () => {
+    document.querySelectorAll<HTMLElement>('[data-proto]').forEach((box) => {
+      box.querySelector('button')?.addEventListener('click', () => {
+        const frame = document.createElement('iframe');
+        frame.src = box.dataset.proto!;
+        frame.title = 'Interactive Figma prototype';
+        frame.allowFullscreen = true;
+        frame.className = 'proto-frame';
+        box.querySelector('.poster')?.replaceWith(frame);
+        frame.focus();
+      }, { once: true });
+    });
+  });
+</script>
+
+<style>
+  .proto { position: relative; }
+  .poster, .proto :global(.proto-frame) {
+    display: grid; place-items: center; align-content: center; gap: 0.6rem;
+    width: 100%; aspect-ratio: 16 / 10; border: 0; border-radius: var(--radius);
+    background: linear-gradient(140deg, var(--c1), var(--c2)); color: #fff;
+    font: inherit; cursor: pointer; box-shadow: var(--shadow-lg);
+  }
+  .proto :global(.proto-frame) { background: #1e1e1e; cursor: auto; animation: fade-up 0.6s var(--ease-out); }
+  .play { display: grid; place-items: center; width: 5rem; height: 5rem; border-radius: 50%; background: #fff; color: var(--ink);
+    box-shadow: 0 0 0 0 rgb(255 255 255 / 0.5); animation: pulse 2.4s var(--ease-out) infinite; transition: transform 0.4s var(--ease-out); }
+  .poster:hover .play { transform: scale(1.1); }
+  @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgb(255 255 255 / 0.55); } 100% { box-shadow: 0 0 0 22px rgb(255 255 255 / 0); } }
+  .label { margin-top: 0.75rem; font-size: clamp(1.25rem, 3vw, 1.75rem); font-weight: 700; letter-spacing: -0.02em; }
+  .sub { opacity: 0.85; font-size: 0.9375rem; }
+  .open { margin-top: 0.75rem; text-align: right; font-size: 0.9375rem; color: var(--ink-2); }
+</style>

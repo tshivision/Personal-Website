@@ -19,3 +19,6 @@ npm-debug.log*
 
 # local tool config
 .claude/
+
+# original full-size images (processed copies live in public/work)
+raw-import/

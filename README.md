@@ -1,10 +1,12 @@
-# Tian Shi · link-in-bio resource hub
+# Tian Shi · portfolio, lab and link-in-bio
 
-A fast, static personal site that replaces Linktree. Built with [Astro](https://astro.build), plain CSS, and hosted for free on Cloudflare Pages.
+One fast, static site for design work, side projects and the link-in-bio. Built with [Astro](https://astro.build) and plain CSS, hosted on Vercel at tianproductdesign.com.
 
 | Page | What it is |
 | --- | --- |
-| `/` | Hero, featured freebie, filterable resource list, email signup, socials |
+| `/` | Portfolio: hero, case studies, Lab (side projects), About, contact |
+| `/work/…` | One page per case study, generated from `src/data/work.ts` |
+| `/links` | Link-in-bio: featured freebie, filterable resource list, email signup, socials |
 | `/spend` | Landing page for the Spend dashboard |
 | `/ikigai` | Coming soon + notify signup |
 | `/odyssey` | Coming soon + notify signup |
@@ -23,11 +25,17 @@ Open http://localhost:4321. Edits reload instantly. To test on your phone over t
 
 `npm run build` creates the production site in `dist/`. `npm run preview` serves that build.
 
+## How to add a case study
+
+1. Put the original images in `raw-import/<slug>/` (PNG or JPG; long Figma exports are fine, they get sliced into panels).
+2. Run `node scripts/process-images.mjs`. It writes WebP files to `public/work/` and their sizes to `src/data/images.json`.
+3. Add an entry to `src/data/work.ts` (copy an existing one). Order in that file = order on the homepage.
+
 ## How to add a new freebie
 
 1. **Add a thumbnail** to `public/thumbs/` (a square SVG, PNG, or WebP, about 200×200).
 2. **Add an entry** to `src/data/resources.json` (copy an existing one and change the fields; see below).
-3. **Commit and push.** Cloudflare Pages rebuilds and the site is live in about a minute.
+3. **Commit and push.** Vercel rebuilds and the site is live in about a minute.
 
 To make it the big card at the top (for your latest reel), set `"featured": true` on it and `false` on the old one.
 
@@ -62,53 +70,31 @@ All in `src/site.config.ts`:
 | `emailFormAction` | Your Kit or Beehiiv form URL. Until set, the signup shows "Signups open very soon" and sends nothing |
 | `emailFieldName` | `email_address` for Kit, `email` for Beehiiv |
 | `calendlyUrl` | Your Calendly event link for `/coaching` |
-| `cfAnalyticsToken` | Cloudflare Web Analytics token (see below) |
+| `cfAnalyticsToken` | Optional Cloudflare Web Analytics token (works on any host; free at dash.cloudflare.com → Web Analytics) |
 | `socials` | Instagram, TikTok, YouTube links |
 
 Also update `site` in `astro.config.mjs` to your real domain once it's connected, and replace `public/og-image.png` (1200×630) if you want a custom share image.
 
 **Email providers:** for Kit, create a form, choose "HTML" embed, and copy the `action="…"` URL. Beehiiv's free plan mostly offers iframe embeds; if you choose Beehiiv, swap the form in `src/components/EmailSignup.astro` for their embed snippet. The hidden `interest` field (e.g. `ikigai`) can become a tag in Kit.
 
-## Deploy: GitHub → Cloudflare Pages
+## Deploy: GitHub → Vercel
 
-### 1. Push to GitHub
+The site is a Vercel project connected to `github.com/tshivision/Personal-Website`. **Every push to `main` redeploys automatically** (about a minute); other branches get preview URLs. Settings live in `vercel.json`, which also redirects the old UXfolio case study links (`/p/…`) to their new pages.
 
-1. Go to https://github.com/new, name the repo (e.g. `tian-link-hub`), keep it empty (no README or .gitignore), and click **Create repository**.
-2. In this folder:
+### Domain
 
-```bash
-git add -A
-git commit -m "v1"
-git branch -M main
-git remote add origin https://github.com/YOUR-USERNAME/tian-link-hub.git
-git push -u origin main
-```
+`tianproductdesign.com` is registered at GoDaddy and points at Vercel through two DNS records (GoDaddy → My Products → Domain → DNS):
 
-### 2. Connect Cloudflare Pages
+| Type | Name | Value |
+| --- | --- | --- |
+| A | `@` | `76.76.21.21` |
+| CNAME | `www` | `cname.vercel-dns.com` |
 
-1. Sign in at https://dash.cloudflare.com (a free account is fine).
-2. Go to **Workers & Pages → Create → Pages → Connect to Git** (Import an existing Git repository).
-3. Authorize GitHub and pick the `tian-link-hub` repo.
-4. Build settings:
-   - **Framework preset:** Astro
-   - **Build command:** `npm run build`
-   - **Build output directory:** `dist`
-   - **Environment variable:** `NODE_VERSION` = `24`
-5. Click **Save and Deploy**. In about a minute you'll get a `your-project.pages.dev` URL.
+If Vercel ever shows different values under Project → Settings → Domains, use those.
 
-From then on, every push to `main` redeploys automatically, and other branches get preview URLs.
+### Swap your bio link
 
-### 3. Custom domain (optional)
-
-In your Pages project: **Custom domains → Set up a domain**. If the domain is on Cloudflare, it configures itself. Then update `site` in `astro.config.mjs` and push.
-
-### 4. Web Analytics
-
-In the Cloudflare dashboard, go to **Analytics & Logs → Web Analytics → Add a site**, enter your domain, and copy the token from the snippet it shows (the value after `"token":`). Paste it into `cfAnalyticsToken` in `src/site.config.ts` and push. The script only loads in production builds. (Alternatively, Pages projects can enable Web Analytics with one click under the project's **Metrics** tab, in which case you can leave the token as a placeholder.)
-
-### 5. Swap your bio link
-
-Replace linktr.ee/tianmaxxing in your Instagram and TikTok bios with the new URL.
+Point your Instagram and TikTok bios at `tianproductdesign.com/links`.
 
 ## Project structure
 
@@ -121,7 +107,7 @@ src/
   components/             ← Hero, FeaturedCard, ResourceGrid, ResourceCard, EmailSignup, ComingSoon, Footer
   pages/                  ← one file per URL
   styles/global.css       ← colors, type, buttons (Direction A: Field notes)
-public/                   ← images, favicon, og-image, Cloudflare _headers
+public/                   ← images, favicon, og-image, resume.pdf, work/ (case study images)
 ```
 
 Design tokens live at the top of `src/styles/global.css`. All color pairs meet WCAG AA.

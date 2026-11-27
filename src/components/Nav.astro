@@ -1,0 +1,93 @@
+---
+import { SITE } from '../site.config';
+const path = Astro.url.pathname;
+const links = [
+  { href: '/#work', label: 'Work', active: path.startsWith('/work') },
+  { href: '/#lab', label: 'Lab', active: false },
+  { href: '/#about', label: 'About', active: false, hideSm: true },
+  { href: '/links', label: 'Links', active: path.startsWith('/links') },
+];
+---
+<header class="nav" data-nav transition:name="site-nav" transition:animate="none">
+  <div class="wrap-wide inner">
+    <a href="/" class="brand" aria-label={`${SITE.name}, home`}>
+      <span class="mark" aria-hidden="true">TS</span>
+      <span class="name">{SITE.name}<span class="role"> · {SITE.role}</span></span>
+    </a>
+    <nav aria-label="Main">
+      <ul>
+        {links.map((l) => (
+          <li class:list={{ 'hide-sm': l.hideSm }}>
+            <a href={l.href} aria-current={l.active ? 'page' : undefined}>{l.label}</a>
+          </li>
+        ))}
+        <li><a href={SITE.resume} class="pill" target="_blank" rel="noopener">Resume <span aria-hidden="true">↗</span><span class="sr-only">(opens in new tab)</span></a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    transition: transform 0.5s var(--ease-out), background-color 0.3s, box-shadow 0.3s;
+  }
+  .nav.is-scrolled {
+    background: rgb(243 243 241 / 0.78);
+    backdrop-filter: saturate(1.6) blur(14px);
+    -webkit-backdrop-filter: saturate(1.6) blur(14px);
+    box-shadow: 0 1px 0 var(--line);
+  }
+  .nav.is-hidden { transform: translateY(-100%); }
+  .inner { display: flex; align-items: center; justify-content: space-between; gap: 1rem; min-height: 4.25rem; }
+
+  .brand { display: inline-flex; align-items: center; gap: 0.65rem; text-decoration: none; color: var(--ink); }
+  .mark {
+    display: grid; place-items: center;
+    width: 2.1rem; height: 2.1rem; border-radius: 50%;
+    background: var(--ink); color: #fff;
+    font-size: 0.75rem; font-weight: 700; letter-spacing: 0.02em;
+    transition: transform 0.6s var(--ease-out), background-color 0.3s;
+  }
+  .brand:hover .mark { transform: rotate(-12deg) scale(1.06); background: var(--accent); }
+  .name { font-size: 0.9375rem; font-weight: 600; letter-spacing: -0.01em; white-space: nowrap; }
+  .role { color: var(--ink-3); font-weight: 500; }
+
+  ul { display: flex; align-items: center; gap: 0.15rem; list-style: none; margin: 0; padding: 0; }
+  ul a {
+    position: relative;
+    display: inline-flex; align-items: center; gap: 0.25rem;
+    min-height: 2.75rem; padding: 0 0.75rem;
+    font-size: 0.9375rem; font-weight: 500;
+    color: var(--ink-2); text-decoration: none;
+    transition: color 0.2s;
+  }
+  ul a:not(.pill)::after {
+    content: ''; position: absolute; left: 0.75rem; right: 0.75rem; bottom: 0.55rem; height: 1.5px;
+    background: currentColor; transform: scaleX(0); transform-origin: right;
+    transition: transform 0.4s var(--ease-out);
+  }
+  ul a:hover { color: var(--ink); }
+  ul a:hover::after, ul a[aria-current='page']::after { transform: scaleX(1); transform-origin: left; }
+  ul a[aria-current='page'] { color: var(--ink); }
+  .pill {
+    margin-left: 0.4rem;
+    min-height: 2.4rem !important;
+    padding: 0 1rem !important;
+    border-radius: 999px;
+    box-shadow: inset 0 0 0 1.5px var(--line-strong);
+    color: var(--ink) !important;
+    transition: box-shadow 0.2s, background-color 0.2s, color 0.2s !important;
+  }
+  .pill:hover { background: var(--ink); color: #fff !important; box-shadow: inset 0 0 0 1.5px var(--ink); }
+
+  @media (max-width: 40rem) {
+    .role, .hide-sm { display: none; }
+    ul a { padding: 0 0.5rem; font-size: 0.875rem; }
+    ul a:not(.pill)::after { left: 0.5rem; right: 0.5rem; }
+    .pill { margin-left: 0.2rem; padding: 0 0.75rem !important; }
+  }
+  @media (max-width: 23rem) { .name { display: none; } }
+</style>

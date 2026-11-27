@@ -1,17 +1,24 @@
 ---
-import '@fontsource-variable/fraunces';
-import '@fontsource-variable/fraunces/wght-italic.css';
-import '@fontsource-variable/instrument-sans';
+import '@fontsource-variable/dm-sans';
+import '@fontsource-variable/dm-sans/wght-italic.css';
 import '../styles/global.css';
+import { ClientRouter } from 'astro:transitions';
 import { SITE } from '../site.config';
+import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
+import ContactFooter from '../components/ContactFooter.astro';
 
 interface Props {
   title?: string;
   description?: string;
   image?: string;
   noindex?: boolean;
+  /** Shows "← Free resources" above the page (link-in-bio pages). */
   backLink?: boolean;
+  /** 'contact' = big "get in touch" footer (portfolio pages); 'simple' = socials only. */
+  footer?: 'contact' | 'simple';
+  /** Reading progress bar along the top (case studies). */
+  progress?: boolean;
 }
 
 const {
@@ -20,9 +27,11 @@ const {
   image = '/og-image.png',
   noindex = false,
   backLink = true,
+  footer = 'simple',
+  progress = false,
 } = Astro.props;
 
-const fullTitle = title ? `${title} · ${SITE.name}` : `${SITE.name} · ${SITE.tagline}`;
+const fullTitle = title ? `${title} · ${SITE.name}` : `${SITE.name} · ${SITE.role}`;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const ogImage = new URL(image, Astro.site);
 const showAnalytics = import.meta.env.PROD && !SITE.cfAnalyticsToken.startsWith('YOUR_');
@@ -35,7 +44,7 @@ const showAnalytics = import.meta.env.PROD && !SITE.cfAnalyticsToken.startsWith(
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
-    <meta name="theme-color" content="#f6f1e8" />
+    <meta name="theme-color" content="#f3f3f1" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     {noindex && <meta name="robots" content="noindex" />}
 
@@ -45,12 +54,12 @@ const showAnalytics = import.meta.env.PROD && !SITE.cfAnalyticsToken.startsWith(
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={ogImage} />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={fullTitle} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
+
+    <ClientRouter />
 
     {showAnalytics && (
       <script
@@ -62,27 +71,39 @@ const showAnalytics = import.meta.env.PROD && !SITE.cfAnalyticsToken.startsWith(
     )}
   </head>
   <body>
+    <a class="skip" href="#main">Skip to content</a>
+    {progress && <div class="progress" data-progress aria-hidden="true"></div>}
+    <Nav />
     {backLink && (
       <nav class="wrap back" aria-label="Back">
-        <a href="/">← {SITE.name}</a>
+        <a href="/links" class="link">← Free resources</a>
       </nav>
     )}
-    <main>
+    <main id="main">
       <slot />
     </main>
-    <Footer />
+    {footer === 'contact' ? <ContactFooter /> : <Footer />}
+    <script>
+      import '../scripts/motion.ts';
+    </script>
   </body>
 </html>
 
 <style>
-  .back { padding-top: 1.25rem; }
-  .back a {
-    display: inline-flex;
-    align-items: center;
-    min-height: 2.75rem;
-    font-weight: 500;
-    color: var(--ink-2);
-    text-decoration: none;
+  .skip {
+    position: fixed; left: 1rem; top: -4rem; z-index: 100;
+    padding: 0.6rem 1rem; border-radius: 999px;
+    background: var(--ink); color: #fff; font-weight: 600; text-decoration: none;
+    transition: top 0.2s;
   }
-  .back a:hover { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
+  .skip:focus { top: 1rem; }
+  .back { padding-top: 0.5rem; }
+  .back a { display: inline-flex; align-items: center; min-height: 2.75rem; font-weight: 500; color: var(--ink-2); }
+  .back a:hover { color: var(--ink); }
+  .progress {
+    position: fixed; inset: 0 0 auto; height: 3px; z-index: 60;
+    background: var(--accent);
+    transform-origin: 0 50%;
+    transform: scaleX(0);
+  }
 </style>

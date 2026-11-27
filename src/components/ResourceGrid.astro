@@ -25,22 +25,29 @@ const usedTags = TAGS.filter((t) => items.some((r) => r.tag === t));
 </section>
 
 <script>
-  const chips = document.querySelectorAll<HTMLButtonElement>('.chip[data-filter]');
-  const items = document.querySelectorAll<HTMLElement>('#resource-list > li');
-  const status = document.getElementById('filter-status');
-  chips.forEach((chip) =>
-    chip.addEventListener('click', () => {
-      const f = chip.dataset.filter;
-      chips.forEach((c) => c.setAttribute('aria-pressed', String(c === chip)));
-      let shown = 0;
-      items.forEach((li) => {
-        const match = f === 'all' || li.dataset.tag === f;
-        li.hidden = !match;
-        if (match) shown++;
-      });
-      if (status) status.textContent = `Showing ${shown} ${shown === 1 ? 'resource' : 'resources'}`;
-    })
-  );
+  document.addEventListener('astro:page-load', () => {
+    const chips = document.querySelectorAll<HTMLButtonElement>('.chip[data-filter]');
+    const items = document.querySelectorAll<HTMLElement>('#resource-list > li');
+    const status = document.getElementById('filter-status');
+    chips.forEach((chip) =>
+      chip.addEventListener('click', () => {
+        const f = chip.dataset.filter;
+        chips.forEach((c) => c.setAttribute('aria-pressed', String(c === chip)));
+        let shown = 0;
+        items.forEach((li) => {
+          const match = f === 'all' || li.dataset.tag === f;
+          li.hidden = !match;
+          if (match) {
+            shown++;
+            li.animate([{ opacity: 0, transform: 'translateY(8px)' }, { opacity: 1, transform: 'none' }], {
+              duration: 400, delay: shown * 40, easing: 'cubic-bezier(0.22, 1, 0.36, 1)', fill: 'backwards',
+            });
+          }
+        });
+        if (status) status.textContent = `Showing ${shown} ${shown === 1 ? 'resource' : 'resources'}`;
+      })
+    );
+  });
 </script>
 
 <style>
@@ -61,9 +68,9 @@ const usedTags = TAGS.filter((t) => items.some((r) => r.tag === t));
     color: var(--ink);
     font: 500 0.9375rem/1 var(--sans);
     cursor: pointer;
-    transition: background-color 0.15s, color 0.15s, border-color 0.15s;
+    transition: background-color 0.2s, color 0.2s, border-color 0.2s, transform 0.2s var(--ease-out);
   }
-  .chip:hover { border-color: var(--ink); }
+  .chip:hover { border-color: var(--ink); transform: translateY(-1px); }
   .chip[aria-pressed='true'] { background: var(--ink); border-color: var(--ink); color: var(--paper); }
   .grid {
     display: grid;

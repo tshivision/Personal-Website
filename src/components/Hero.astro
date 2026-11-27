@@ -2,8 +2,8 @@
 import { SITE } from '../site.config';
 ---
 <header class="hero">
-  {SITE.photo
-    ? <img class="avatar" src={SITE.photo} alt={`Portrait of ${SITE.name}`} width="80" height="80" />
+  {SITE.avatar
+    ? <img class="avatar" src={SITE.avatar} alt={`Portrait of ${SITE.name}`} width="80" height="80" />
     : <div class="avatar avatar--mono" aria-hidden="true">TS</div>}
   <h1>{SITE.name}</h1>
   <p class="tagline">{SITE.tagline}</p>
@@ -29,8 +29,7 @@ import { SITE } from '../site.config';
   }
   h1 { font-size: clamp(2.5rem, 11vw, 3.25rem); letter-spacing: -0.02em; }
   .tagline {
-    font-family: var(--serif);
-    font-style: italic;
+    font-weight: 500;
     font-size: 1.25rem;
     color: var(--ink-2);
     margin-top: 0.35rem;

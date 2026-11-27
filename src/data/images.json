@@ -1,0 +1,469 @@
+{
+  "common/avatar": {
+    "src": "/work/common/avatar.webp",
+    "width": 1200,
+    "height": 1600
+  },
+  "costco/carousel-1": {
+    "src": "/work/costco/carousel-1.webp",
+    "width": 363,
+    "height": 772
+  },
+  "costco/carousel-2": {
+    "src": "/work/costco/carousel-2.webp",
+    "width": 363,
+    "height": 776
+  },
+  "costco/carousel-3": {
+    "src": "/work/costco/carousel-3.webp",
+    "width": 363,
+    "height": 769
+  },
+  "costco/competitive": {
+    "src": "/work/costco/competitive.webp",
+    "width": 333,
+    "height": 352
+  },
+  "costco/final-1": {
+    "src": "/work/costco/final-1.webp",
+    "width": 363,
+    "height": 772
+  },
+  "costco/final-2": {
+    "src": "/work/costco/final-2.webp",
+    "width": 363,
+    "height": 776
+  },
+  "costco/final-3": {
+    "src": "/work/costco/final-3.webp",
+    "width": 380,
+    "height": 814
+  },
+  "costco/final": {
+    "src": "/work/costco/final.webp",
+    "width": 1600,
+    "height": 1675
+  },
+  "costco/find-apple": {
+    "src": "/work/costco/find-apple.webp",
+    "width": 1022,
+    "height": 577
+  },
+  "costco/hamburger": {
+    "src": "/work/costco/hamburger.webp",
+    "width": 788,
+    "height": 788
+  },
+  "costco/hero": {
+    "src": "/work/costco/hero.webp",
+    "width": 380,
+    "height": 814
+  },
+  "costco/interviews": {
+    "src": "/work/costco/interviews.webp",
+    "width": 879,
+    "height": 615
+  },
+  "costco/iterate-a": {
+    "src": "/work/costco/iterate-a.webp",
+    "width": 1355,
+    "height": 764
+  },
+  "costco/iterate-b": {
+    "src": "/work/costco/iterate-b.webp",
+    "width": 1311,
+    "height": 746
+  },
+  "costco/iterate": {
+    "src": "/work/costco/iterate.webp",
+    "width": 1302,
+    "height": 735
+  },
+  "costco/iterations": {
+    "src": "/work/costco/iterations.webp",
+    "width": 1092,
+    "height": 789
+  },
+  "costco/journey": {
+    "src": "/work/costco/journey.webp",
+    "width": 1332,
+    "height": 744
+  },
+  "costco/overview": {
+    "src": "/work/costco/overview.webp",
+    "width": 1153,
+    "height": 550
+  },
+  "costco/pain-points-2": {
+    "src": "/work/costco/pain-points-2.webp",
+    "width": 1600,
+    "height": 741
+  },
+  "costco/pain-points": {
+    "src": "/work/costco/pain-points.webp",
+    "width": 872,
+    "height": 842
+  },
+  "costco/personas": {
+    "src": "/work/costco/personas.webp",
+    "width": 762,
+    "height": 761
+  },
+  "costco/sketch-photo-1": {
+    "src": "/work/costco/sketch-photo-1.webp",
+    "width": 1200,
+    "height": 1600
+  },
+  "costco/sketch-photo-2": {
+    "src": "/work/costco/sketch-photo-2.webp",
+    "width": 1200,
+    "height": 1600
+  },
+  "costco/sketches": {
+    "src": "/work/costco/sketches.webp",
+    "width": 1153,
+    "height": 469
+  },
+  "costco/solution-1": {
+    "src": "/work/costco/solution-1.webp",
+    "width": 1344,
+    "height": 748
+  },
+  "costco/solution-2": {
+    "src": "/work/costco/solution-2.webp",
+    "width": 1328,
+    "height": 760
+  },
+  "costco/solution-3": {
+    "src": "/work/costco/solution-3.webp",
+    "width": 1368,
+    "height": 729
+  },
+  "costco/thumb": {
+    "src": "/work/costco/thumb.webp",
+    "width": 1600,
+    "height": 793
+  },
+  "costco/usability": {
+    "src": "/work/costco/usability.webp",
+    "width": 1600,
+    "height": 761
+  },
+  "costco/wireframes": {
+    "src": "/work/costco/wireframes.webp",
+    "width": 1402,
+    "height": 815
+  },
+  "pershingx/body-1": {
+    "slices": [
+      {
+        "src": "/work/pershingx/body-1-01.webp",
+        "width": 1600,
+        "height": 1760
+      },
+      {
+        "src": "/work/pershingx/body-1-02.webp",
+        "width": 1600,
+        "height": 1760
+      },
+      {
+        "src": "/work/pershingx/body-1-03.webp",
+        "width": 1600,
+        "height": 1760
+      },
+      {
+        "src": "/work/pershingx/body-1-04.webp",
+        "width": 1600,
+        "height": 1760
+      },
+      {
+        "src": "/work/pershingx/body-1-05.webp",
+        "width": 1600,
+        "height": 1760
+      },
+      {
+        "src": "/work/pershingx/body-1-06.webp",
+        "width": 1600,
+        "height": 1400
+      }
+    ]
+  },
+  "pershingx/hero": {
+    "src": "/work/pershingx/hero.webp",
+    "width": 1440,
+    "height": 1821
+  },
+  "pershingx/thumb": {
+    "src": "/work/pershingx/thumb.webp",
+    "width": 1440,
+    "height": 1024
+  },
+  "purefacts/body-1": {
+    "slices": [
+      {
+        "src": "/work/purefacts/body-1-01.webp",
+        "width": 1600,
+        "height": 1760
+      },
+      {
+        "src": "/work/purefacts/body-1-02.webp",
+        "width": 1600,
+        "height": 1760
+      },
+      {
+        "src": "/work/purefacts/body-1-03.webp",
+        "width": 1600,
+        "height": 1760
+      },
+      {
+        "src": "/work/purefacts/body-1-04.webp",
+        "width": 1600,
+        "height": 1760
+      },
+      {
+        "src": "/work/purefacts/body-1-05.webp",
+        "width": 1600,
+        "height": 1760
+      },
+      {
+        "src": "/work/purefacts/body-1-06.webp",
+        "width": 1600,
+        "height": 1760
+      },
+      {
+        "src": "/work/purefacts/body-1-07.webp",
+        "width": 1600,
+        "height": 1760
+      },
+      {
+        "src": "/work/purefacts/body-1-08.webp",
+        "width": 1600,
+        "height": 1422
+      }
+    ]
+  },
+  "purefacts/body-2": {
+    "slices": [
+      {
+        "src": "/work/purefacts/body-2-01.webp",
+        "width": 1600,
+        "height": 1760
+      },
+      {
+        "src": "/work/purefacts/body-2-02.webp",
+        "width": 1600,
+        "height": 1760
+      },
+      {
+        "src": "/work/purefacts/body-2-03.webp",
+        "width": 1600,
+        "height": 1760
+      },
+      {
+        "src": "/work/purefacts/body-2-04.webp",
+        "width": 1600,
+        "height": 2152
+      }
+    ]
+  },
+  "purefacts/hero-bg": {
+    "src": "/work/purefacts/hero-bg.webp",
+    "width": 1497,
+    "height": 702
+  },
+  "purefacts/hero": {
+    "src": "/work/purefacts/hero.webp",
+    "width": 1440,
+    "height": 1705
+  },
+  "purefacts/thumb": {
+    "src": "/work/purefacts/thumb.webp",
+    "width": 1440,
+    "height": 1024
+  },
+  "sales-enablement/body-1": {
+    "slices": [
+      {
+        "src": "/work/sales-enablement/body-1-01.webp",
+        "width": 1600,
+        "height": 1760
+      },
+      {
+        "src": "/work/sales-enablement/body-1-02.webp",
+        "width": 1600,
+        "height": 1760
+      },
+      {
+        "src": "/work/sales-enablement/body-1-03.webp",
+        "width": 1600,
+        "height": 1880
+      }
+    ]
+  },
+  "sales-enablement/body-2": {
+    "slices": [
+      {
+        "src": "/work/sales-enablement/body-2-01.webp",
+        "width": 1440,
+        "height": 1584
+      },
+      {
+        "src": "/work/sales-enablement/body-2-02.webp",
+        "width": 1440,
+        "height": 2122
+      }
+    ]
+  },
+  "sales-enablement/body-3": {
+    "src": "/work/sales-enablement/body-3.webp",
+    "width": 1440,
+    "height": 2641
+  },
+  "sales-enablement/hero": {
+    "slices": [
+      {
+        "src": "/work/sales-enablement/hero-01.webp",
+        "width": 1440,
+        "height": 1584
+      },
+      {
+        "src": "/work/sales-enablement/hero-02.webp",
+        "width": 1440,
+        "height": 2122
+      }
+    ]
+  },
+  "sales-enablement/thumb": {
+    "src": "/work/sales-enablement/thumb.webp",
+    "width": 1440,
+    "height": 1024
+  },
+  "wbi/body-1": {
+    "slices": [
+      {
+        "src": "/work/wbi/body-1-01.webp",
+        "width": 1600,
+        "height": 1760
+      },
+      {
+        "src": "/work/wbi/body-1-02.webp",
+        "width": 1600,
+        "height": 1760
+      },
+      {
+        "src": "/work/wbi/body-1-03.webp",
+        "width": 1600,
+        "height": 1760
+      },
+      {
+        "src": "/work/wbi/body-1-04.webp",
+        "width": 1600,
+        "height": 2293
+      }
+    ]
+  },
+  "wbi/hero-bg": {
+    "src": "/work/wbi/hero-bg.webp",
+    "width": 1497,
+    "height": 702
+  },
+  "wbi/hero": {
+    "src": "/work/wbi/hero.webp",
+    "width": 1297,
+    "height": 767
+  },
+  "wbi/thumb": {
+    "src": "/work/wbi/thumb.webp",
+    "width": 1078,
+    "height": 767
+  },
+  "zoom/body-1": {
+    "slices": [
+      {
+        "src": "/work/zoom/body-1-01.webp",
+        "width": 1440,
+        "height": 1584
+      },
+      {
+        "src": "/work/zoom/body-1-02.webp",
+        "width": 1440,
+        "height": 1584
+      },
+      {
+        "src": "/work/zoom/body-1-03.webp",
+        "width": 1440,
+        "height": 1584
+      },
+      {
+        "src": "/work/zoom/body-1-04.webp",
+        "width": 1440,
+        "height": 1584
+      },
+      {
+        "src": "/work/zoom/body-1-05.webp",
+        "width": 1440,
+        "height": 1584
+      },
+      {
+        "src": "/work/zoom/body-1-06.webp",
+        "width": 1440,
+        "height": 1584
+      },
+      {
+        "src": "/work/zoom/body-1-07.webp",
+        "width": 1440,
+        "height": 1584
+      },
+      {
+        "src": "/work/zoom/body-1-08.webp",
+        "width": 1440,
+        "height": 1584
+      },
+      {
+        "src": "/work/zoom/body-1-09.webp",
+        "width": 1440,
+        "height": 1584
+      },
+      {
+        "src": "/work/zoom/body-1-10.webp",
+        "width": 1440,
+        "height": 1584
+      },
+      {
+        "src": "/work/zoom/body-1-11.webp",
+        "width": 1440,
+        "height": 1584
+      },
+      {
+        "src": "/work/zoom/body-1-12.webp",
+        "width": 1440,
+        "height": 1584
+      },
+      {
+        "src": "/work/zoom/body-1-13.webp",
+        "width": 1440,
+        "height": 1584
+      },
+      {
+        "src": "/work/zoom/body-1-14.webp",
+        "width": 1440,
+        "height": 1584
+      },
+      {
+        "src": "/work/zoom/body-1-15.webp",
+        "width": 1440,
+        "height": 1401
+      }
+    ]
+  },
+  "zoom/hero": {
+    "src": "/work/zoom/hero.webp",
+    "width": 896,
+    "height": 561
+  },
+  "zoom/thumb": {
+    "src": "/work/zoom/thumb.webp",
+    "width": 1600,
+    "height": 800
+  }
+}

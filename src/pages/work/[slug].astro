@@ -1,0 +1,223 @@
+---
+import Base from '../../layouts/Base.astro';
+import Cover from '../../components/Cover.astro';
+import Prototype from '../../components/Prototype.astro';
+import { work, img, doc, type CaseStudy } from '../../data/work';
+
+export function getStaticPaths() {
+  return work.map((study, i) => ({
+    params: { slug: study.slug },
+    props: { study, next: work[(i + 1) % work.length] },
+  }));
+}
+
+interface Props { study: CaseStudy; next: CaseStudy }
+const { study: s, next } = Astro.props;
+const split = (t: string) => t.split(' ');
+---
+<Base title={`${s.title} · ${s.client}`} description={s.summary} backLink={false} footer="contact" progress>
+  <article>
+    <header class="head wrap-wide">
+      <a href="/#work" class="crumb fade-up link">← All work</a>
+      <p class="kicker fade-up" style="--base:80ms"><span>{s.client}</span><span aria-hidden="true">·</span><span>{s.industry}</span></p>
+      <h1 class="words">
+        {split(s.title).map((w, i) => <span class="w" style={`--i:${i};--base:120ms`}><span>{w}</span></span>)}
+      </h1>
+      <p class="summary fade-up" style="--base:450ms">{s.summary}</p>
+      {s.meta && (
+        <dl class="meta fade-up" style="--base:600ms">
+          {s.meta.map((m) => (
+            <div><dt>{m.label}</dt><dd>{m.value}</dd></div>
+          ))}
+        </dl>
+      )}
+    </header>
+
+    <div class="hero wrap-wide">
+      <Cover study={s} size="hero" eager />
+    </div>
+
+    <div class="body">
+      {s.blocks.map((b) => {
+        switch (b.type) {
+          case 'document': {
+            const parts = doc(b.image);
+            return (
+              <section class="doc wrap-wide" aria-label={b.label}>
+                <div class="paper">
+                  {parts.map((p, i) => (
+                    <img
+                      src={p.src} width={p.width} height={p.height}
+                      alt={parts.length > 1 ? `${b.label}, part ${i + 1} of ${parts.length}` : b.label}
+                      loading={i === 0 ? 'eager' : 'lazy'} decoding="async"
+                      data-reveal="fade"
+                    />
+                  ))}
+                </div>
+              </section>
+            );
+          }
+          case 'prototype':
+            return <section class="wrap-wide block" data-reveal><Prototype url={b.url} title={b.title} colors={s.colors} /></section>;
+          case 'intro':
+            return (
+              <section class="intro wrap block">
+                <h2 data-reveal>{b.title}</h2>
+                {b.body.map((p) => <p class="lede" data-reveal>{p}</p>)}
+                <dl class="meta meta--intro" data-reveal>
+                  {b.meta.map((m) => <div><dt>{m.label}</dt><dd>{m.value}</dd></div>)}
+                </dl>
+              </section>
+            );
+          case 'heading':
+            return (
+              <header class="chapter wrap-wide">
+                {b.kicker && <p class="eyebrow" data-reveal>{b.kicker}</p>}
+                <h2 data-reveal style="--d:80ms">{b.text}</h2>
+              </header>
+            );
+          case 'text':
+            return (
+              <section class:list={['split wrap-wide block', { flip: b.flip, solo: !b.image }]}>
+                <div class="split-text" data-reveal>
+                  {b.title && <h3>{b.title}</h3>}
+                  {b.body?.map((p) => <p>{p}</p>)}
+                  {b.callout && (
+                    <aside class="callout"><p class="eyebrow">{b.callout.title}</p><p>{b.callout.text}</p></aside>
+                  )}
+                  {b.list && (
+                    <>
+                      {b.list.title && <p class="list-title">{b.list.title}</p>}
+                      <ul>{b.list.items.map((it) => <li>{it}</li>)}</ul>
+                    </>
+                  )}
+                </div>
+                {b.image && (
+                  <figure class="shot" data-reveal style="--d:120ms">
+                    <img {...img(b.image)} alt={b.alt ?? ''} loading="lazy" decoding="async" />
+                  </figure>
+                )}
+              </section>
+            );
+          case 'image':
+            return (
+              <figure class:list={['figure block', b.size === 'narrow' ? 'wrap' : 'wrap-wide']} data-reveal>
+                <div class="shot"><img {...img(b.image)} alt={b.alt} loading="lazy" decoding="async" /></div>
+                {b.caption && <figcaption>{b.caption}</figcaption>}
+              </figure>
+            );
+          case 'gallery':
+            return (
+              <div class:list={['gallery wrap-wide block', `gallery--${b.variant ?? 'grid'}`]} role="group" aria-label={b.alt} data-stagger="100">
+                {b.images.map((k) => (
+                  <figure class="shot" data-reveal><img {...img(k)} alt="" loading="lazy" decoding="async" /></figure>
+                ))}
+              </div>
+            );
+          case 'stats':
+            return (
+              <dl class="stats wrap-wide block" data-stagger="100">
+                {b.items.map((st) => (
+                  <div data-reveal><dt>{st.label}</dt><dd><span data-count={st.value}>{st.value}</span></dd></div>
+                ))}
+              </dl>
+            );
+        }
+      })}
+    </div>
+
+    <nav class="next wrap-wide" aria-label="Next case study">
+      <a href={`/work/${next.slug}`} class="next-card" data-reveal style={`--c1:${next.colors[0]};--c2:${next.colors[1]}`}>
+        <span class="next-label">Next case study</span>
+        <span class="next-title">{next.title}</span>
+        <span class="next-kicker">{next.client} · {next.industry}</span>
+        <span class="next-go" aria-hidden="true">→</span>
+      </a>
+    </nav>
+  </article>
+</Base>
+
+<style>
+  .head { padding-top: clamp(2rem, 6vw, 4.5rem); }
+  .crumb { display: inline-block; font-weight: 500; color: var(--ink-2); }
+  .kicker { display: flex; flex-wrap: wrap; gap: 0.45rem; margin-top: 2rem; font-weight: 600; font-size: 0.9375rem; color: var(--ink-3); }
+  .kicker span:first-child { color: var(--accent); }
+  h1 { font-size: clamp(2.75rem, 8vw, 6.5rem); letter-spacing: -0.05em; line-height: 0.98; margin-top: 0.75rem; max-width: 16ch; }
+  .summary { max-width: 44rem; margin-top: 1.5rem; font-size: clamp(1.125rem, 1.8vw, 1.375rem); line-height: 1.5; color: var(--ink-2); }
+
+  .meta { display: grid; gap: 1.25rem 2.5rem; margin: 2.5rem 0 0; grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr)); border-top: 1px solid var(--line); padding-top: 1.5rem; }
+  .meta dt { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-3); }
+  .meta dd { margin: 0.35rem 0 0; font-size: 0.9375rem; line-height: 1.5; }
+
+  .hero { margin-top: clamp(2.5rem, 6vw, 4rem); }
+
+  .body { margin-top: clamp(3rem, 8vw, 6rem); }
+  .block { margin-top: clamp(3rem, 7vw, 5.5rem); }
+
+  /* Figma exports, shown as one continuous sheet */
+  .doc + .doc, .block + .doc, .doc + .block { margin-top: clamp(2rem, 5vw, 4rem); }
+  .paper { overflow: hidden; border-radius: var(--radius); background: #fff; box-shadow: var(--shadow-lg); }
+  .paper img { width: 100%; height: auto; }
+  @media (scripting: enabled) { .paper img[data-reveal] { transition-duration: 1.2s; } }
+
+  .intro h2 { font-size: clamp(1.75rem, 4vw, 2.5rem); letter-spacing: -0.035em; }
+  .lede { margin-top: 1rem; font-size: 1.25rem; color: var(--ink-2); }
+  .meta--intro { grid-template-columns: 1fr; }
+  @media (min-width: 40rem) { .meta--intro { grid-template-columns: 2fr 1fr 1fr; } }
+
+  .chapter { margin-top: clamp(5rem, 12vw, 9rem); }
+  .chapter h2 { font-size: clamp(2rem, 5vw, 3.75rem); letter-spacing: -0.045em; max-width: 20ch; margin-top: 0.75rem; }
+
+  .split { display: grid; gap: 2rem 4rem; align-items: center; }
+  @media (min-width: 52rem) {
+    .split { grid-template-columns: 1fr 1.15fr; }
+    .split.flip .split-text { order: 2; }
+    .split.solo { grid-template-columns: minmax(0, 44rem); }
+  }
+  .split-text h3 { font-size: clamp(1.5rem, 3vw, 2rem); letter-spacing: -0.03em; margin-bottom: 1rem; }
+  .split-text p { color: var(--ink-2); }
+  .split-text p + p { margin-top: 0.9rem; }
+  .list-title { margin-top: 1.5rem; font-weight: 700; color: var(--ink) !important; }
+  .split-text ul { margin: 0.6rem 0 0; padding: 0; list-style: none; }
+  .split-text li { position: relative; padding-left: 1.5rem; color: var(--ink-2); }
+  .split-text li + li { margin-top: 0.5rem; }
+  .split-text li::before { content: ''; position: absolute; left: 0.2rem; top: 0.65em; width: 0.5rem; height: 0.5rem; border-radius: 2px; background: var(--accent); transform: rotate(45deg); }
+  .callout { margin-top: 1.5rem; padding: 1.25rem 1.4rem; border-radius: var(--radius-sm); background: var(--accent-tint); border-left: 3px solid var(--accent); }
+  .callout p:last-child { margin-top: 0.4rem; color: var(--ink) !important; font-weight: 500; }
+
+  .shot { margin: 0; overflow: hidden; border-radius: var(--radius-sm); background: #fff; box-shadow: var(--shadow-lg); }
+  .shot img { width: 100%; height: auto; transition: transform 1.2s var(--ease-out); }
+  .shot:hover img { transform: scale(1.02); }
+  .figure { margin-left: auto; margin-right: auto; }
+  .figure figcaption { margin-top: 1rem; max-width: 44rem; color: var(--ink-3); font-size: 0.9375rem; }
+
+  .gallery { display: grid; gap: 1.25rem; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); align-items: start; }
+  .gallery--phones { grid-template-columns: repeat(3, minmax(0, 15rem)); justify-content: center; gap: clamp(0.75rem, 3vw, 2.5rem); }
+  .gallery--phones .shot { padding: 6px; border-radius: 22px; background: #111; }
+  .gallery--phones .shot img { border-radius: 16px; }
+  .gallery--phones .shot:nth-child(2) { transform: translateY(-1.5rem); }
+
+  .stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-bottom: 0; }
+  @media (min-width: 48rem) { .stats { grid-template-columns: repeat(4, 1fr); } }
+  .stats > div { display: flex; flex-direction: column-reverse; padding: 1.75rem 1.5rem; border-radius: var(--radius); background: var(--surface); box-shadow: var(--shadow-sm); }
+  .stats dd { margin: 0; font-size: clamp(3rem, 7vw, 4.5rem); font-weight: 700; letter-spacing: -0.05em; line-height: 1; color: var(--accent); font-variant-numeric: tabular-nums; }
+  .stats dt { margin-top: 0.5rem; color: var(--ink-2); font-weight: 500; }
+
+  /* Next project */
+  .next { margin-top: clamp(5rem, 12vw, 9rem); }
+  .next-card {
+    position: relative; display: grid; gap: 0.5rem; padding: clamp(2rem, 6vw, 4rem); overflow: hidden;
+    border-radius: calc(var(--radius) + 6px); color: #fff; text-decoration: none;
+    background: linear-gradient(140deg, var(--c1), var(--c2));
+    isolation: isolate;
+  }
+  .next-card::before { content: ''; position: absolute; inset: 0; z-index: -1; background: rgb(0 0 0 / 0.28); transition: background-color 0.5s; }
+  .next-card:hover::before { background: rgb(0 0 0 / 0.12); }
+  .next-label { font-size: 0.8125rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.85; }
+  .next-title { font-size: clamp(2rem, 6vw, 4.5rem); font-weight: 700; letter-spacing: -0.045em; line-height: 1; max-width: 16ch; }
+  .next-kicker { opacity: 0.85; font-weight: 500; }
+  .next-go { position: absolute; right: clamp(1.5rem, 5vw, 3.5rem); bottom: clamp(1.5rem, 5vw, 3.5rem); display: grid; place-items: center;
+    width: 3.5rem; height: 3.5rem; border-radius: 50%; background: #fff; color: var(--ink); font-size: 1.4rem;
+    transition: transform 0.5s var(--ease-out); }
+  .next-card:hover .next-go { transform: translateX(6px) rotate(-8deg) scale(1.08); }
+</style>

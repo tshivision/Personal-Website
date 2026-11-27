@@ -1,60 +1,76 @@
-/* Direction A · Field notes */
+/* Tian Shi · one design system for portfolio, lab and link-in-bio.
+   Based on the original UXfolio look: DM Sans, cobalt, light grey. */
 :root {
-  --paper: #f6f1e8;
-  --card: #fffdf8;
-  --ink: #1f1b16;
-  --ink-2: #5c5246;   /* 6.9:1 on paper */
-  --ink-3: #6b5f51;   /* 5.4:1 on paper, for meta text */
-  --line: #e4d8c4;
-  --line-strong: #cfc2ad;
-  --accent: #a0461f;  /* 6.1:1 on paper, 7:1 with white text */
-  --accent-hover: #86391a;
-  --accent-tint: #f3e3d6;
+  --bg: #f3f3f1;
+  --surface: #ffffff;
+  --ink: #1a1a1a;
+  --ink-2: #4f4f4f;    /* 7.9:1 on bg */
+  --ink-3: #676767;    /* 5.3:1 on bg */
+  --line: #e2e2de;
+  --line-strong: #cbcbc6;
+  --accent: #2944a4;   /* cobalt, 8.1:1 on bg */
+  --accent-hover: #1e3485;
+  --accent-tint: #e5e9f7;
 
-  --serif: 'Fraunces Variable', Georgia, 'Times New Roman', serif;
-  --sans: 'Instrument Sans Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  /* Legacy names used by the link-in-bio components */
+  --paper: var(--bg);
+  --card: var(--surface);
 
-  --radius: 14px;
-  --radius-sm: 10px;
-  --wrap: 36rem;
-  --gutter: 1.25rem;
+  --sans: 'DM Sans Variable', 'DM Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --serif: var(--sans);
+
+  --radius: 18px;
+  --radius-sm: 12px;
+  --wrap: 36rem;        /* narrow column (link pages) */
+  --wrap-wide: 76rem;   /* portfolio */
+  --gutter: clamp(1rem, 4vw, 2.5rem);
+
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --shadow-sm: 0 1px 2px rgb(20 24 40 / 0.06), 0 2px 8px rgb(20 24 40 / 0.04);
+  --shadow-lg: 0 2px 4px rgb(20 24 40 / 0.04), 0 24px 60px -12px rgb(20 24 40 / 0.22);
   color-scheme: light;
 }
 
 *, *::before, *::after { box-sizing: border-box; }
-html { -webkit-text-size-adjust: 100%; }
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; overflow-x: clip; }
+body { overflow-x: clip; }
 body {
   margin: 0;
-  background: var(--paper);
+  background: var(--bg);
   color: var(--ink);
   font-family: var(--sans);
   font-size: 1.0625rem;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 img, svg { display: block; max-width: 100%; }
 a { color: inherit; }
-h1, h2, h3 { font-family: var(--serif); font-weight: 600; line-height: 1.1; margin: 0; letter-spacing: -0.01em; }
+h1, h2, h3, h4 { font-family: var(--sans); font-weight: 700; line-height: 1.08; margin: 0; letter-spacing: -0.025em; }
 p { margin: 0; }
+::selection { background: var(--accent); color: #fff; }
 
 :focus-visible {
   outline: 3px solid var(--accent);
   outline-offset: 3px;
-  border-radius: 4px;
+  border-radius: 6px;
 }
 
-.wrap { width: 100%; max-width: var(--wrap); margin: 0 auto; padding: 0 var(--gutter); }
+.wrap { width: 100%; max-width: calc(var(--wrap) + 2 * var(--gutter)); margin: 0 auto; padding: 0 var(--gutter); }
+.wrap-wide { width: 100%; max-width: calc(var(--wrap-wide) + 2 * var(--gutter)); margin: 0 auto; padding: 0 var(--gutter); }
 .stack > * + * { margin-top: var(--space, 1rem); }
 
 .eyebrow {
   font-size: 0.75rem;
   font-weight: 600;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--accent);
 }
 
 .btn {
+  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -62,16 +78,33 @@ p { margin: 0; }
   min-height: 3.25rem;
   padding: 0.75rem 1.5rem;
   border: 0;
-  border-radius: var(--radius-sm);
+  border-radius: 999px;
   background: var(--accent);
   color: #fff;
   font: 600 1rem/1.2 var(--sans);
   text-decoration: none;
   cursor: pointer;
-  transition: background-color 0.15s ease;
+  overflow: hidden;
+  isolation: isolate;
+  transition: transform 0.3s var(--ease-out), background-color 0.2s, box-shadow 0.3s var(--ease-out);
 }
-.btn:hover { background: var(--accent-hover); }
+.btn:hover { background: var(--accent-hover); transform: translateY(-2px); box-shadow: 0 10px 24px -10px rgb(41 68 164 / 0.7); }
+.btn:active { transform: translateY(0) scale(0.98); }
+.btn .arrow { transition: transform 0.3s var(--ease-out); }
+.btn:hover .arrow { transform: translateX(3px); }
+.btn--ghost { background: transparent; color: var(--ink); box-shadow: inset 0 0 0 1.5px var(--line-strong); }
+.btn--ghost:hover { background: var(--surface); box-shadow: inset 0 0 0 1.5px var(--ink); }
 .btn--block { display: flex; width: 100%; }
+
+/* Underline that draws in on hover */
+.link {
+  color: inherit;
+  text-decoration: none;
+  background: linear-gradient(currentColor, currentColor) 0 100% / 0% 1.5px no-repeat;
+  transition: background-size 0.4s var(--ease-out), color 0.2s;
+  padding-bottom: 1px;
+}
+.link:hover { background-size: 100% 1.5px; }
 
 .sr-only {
   position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
@@ -82,6 +115,42 @@ p { margin: 0; }
 .prose ul { padding-left: 1.2rem; margin: 0.75rem 0 0; }
 .prose li + li { margin-top: 0.4rem; }
 
+/* ── Motion ─────────────────────────────────────────────────────────────
+   [data-reveal] fades and rises into view (driven by src/scripts/motion.ts).
+   Only hidden when JS can run, so content never disappears without it. */
+@media (scripting: enabled) {
+  [data-reveal] {
+    opacity: 0;
+    transform: translateY(28px);
+    transition:
+      opacity 0.9s var(--ease-out) var(--d, 0ms),
+      transform 0.9s var(--ease-out) var(--d, 0ms);
+  }
+  [data-reveal='fade'] { transform: none; }
+  [data-reveal='scale'] { transform: scale(0.96); }
+  [data-reveal].is-in { opacity: 1; transform: none; }
+}
+
+/* Words rise in on page load: wrap each word in <span class="w" style="--i:n"> */
+.words .w { margin-right: 0.24em; }
+.words .w:last-child { margin-right: 0; }
+.words .w { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: 0.08em; margin-bottom: -0.08em; }
+.words .w > span { display: inline-block; animation: word-rise 1s var(--ease-out) both; animation-delay: calc(var(--i) * 70ms + var(--base, 0ms)); }
+@keyframes word-rise { from { transform: translateY(105%); } to { transform: none; } }
+
+.fade-up { animation: fade-up 1s var(--ease-out) both; animation-delay: var(--base, 0ms); }
+@keyframes fade-up { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+
+/* Page transitions (Astro ClientRouter uses the View Transitions API) */
+::view-transition-old(root) { animation: 0.35s var(--ease-in-out) both vt-out; }
+::view-transition-new(root) { animation: 0.55s var(--ease-out) 0.1s both vt-in; }
+::view-transition-group(*) { animation-duration: 0.6s; animation-timing-function: var(--ease-out); }
+@keyframes vt-out { to { opacity: 0; transform: translateY(-12px); } }
+@keyframes vt-in { from { opacity: 0; transform: translateY(16px); } }
+
 @media (prefers-reduced-motion: reduce) {
-  * { transition: none !important; scroll-behavior: auto !important; }
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-delay: 0ms !important; transition-duration: 0.01ms !important; transition-delay: 0ms !important; }
+  [data-reveal] { opacity: 1 !important; transform: none !important; }
+  ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; }
 }

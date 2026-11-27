@@ -1,0 +1,91 @@
+---
+// The visual for a case study: its gradient tile with the screen (in a browser
+// frame) or a fan of phones. Shared by the homepage card and the case study hero,
+// so the tile morphs between them during page transitions.
+import { img, type CaseStudy } from '../data/work';
+interface Props { study: CaseStudy; size?: 'card' | 'hero'; eager?: boolean }
+const { study: s, size = 'card', eager = false } = Astro.props;
+const style = `--c1:${s.colors[0]};--c2:${s.colors[1]}`;
+const loading = eager ? 'eager' : 'lazy';
+---
+<div class:list={['cover', `cover--${size}`, `cover--${s.cover.kind}`]} style={style} transition:name={`cover-${s.slug}`}>
+  <div class="glow" aria-hidden="true"></div>
+  {s.cover.kind === 'screen' ? (
+    <div class="frame">
+      <div class="chrome" aria-hidden="true"><i></i><i></i><i></i></div>
+      <img {...img(s.cover.image)} alt={s.cover.alt} loading={loading} decoding="async" />
+    </div>
+  ) : (
+    <div class="phones" role="img" aria-label={s.cover.alt}>
+      {s.cover.images.map((k, i) => (
+        <div class="phone" style={`--n:${i - 1}`}>
+          <img {...img(k)} alt="" loading={loading} decoding="async" />
+        </div>
+      ))}
+    </div>
+  )}
+</div>
+
+<style>
+  .cover {
+    --mx: 0; --my: 0;
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--radius);
+    background:
+      radial-gradient(120% 90% at 15% 0%, color-mix(in srgb, var(--c1) 85%, white) 0%, transparent 60%),
+      linear-gradient(150deg, var(--c1) 0%, var(--c2) 100%);
+    isolation: isolate;
+  }
+  .cover--card { aspect-ratio: 5 / 4; }
+  .cover--hero { aspect-ratio: 16 / 10; border-radius: calc(var(--radius) + 6px); }
+
+  /* Soft light that follows the pointer */
+  .glow {
+    position: absolute; inset: -20%;
+    background: radial-gradient(40% 40% at calc(50% + var(--mx) * 60%) calc(50% + var(--my) * 60%), rgb(255 255 255 / 0.28), transparent 70%);
+    opacity: 0; transition: opacity 0.5s;
+    pointer-events: none; z-index: 2;
+  }
+  :global([data-tilt]:hover) .glow { opacity: 1; }
+
+  /* Browser-framed screen, bleeding off the bottom-right */
+  .frame {
+    position: absolute;
+    left: 11%; top: 14%;
+    width: 100%;
+    border-radius: 10px 0 0 0;
+    background: #fff;
+    box-shadow: 0 30px 60px -20px rgb(10 15 40 / 0.45), 0 0 0 1px rgb(255 255 255 / 0.25);
+    overflow: hidden;
+    transform: translate3d(calc(var(--mx) * -10px), calc(var(--my) * -10px), 0);
+    transition: transform 0.9s var(--ease-out), left 0.9s var(--ease-out), top 0.9s var(--ease-out);
+  }
+  .cover--hero .frame { left: 8%; top: 11%; width: 92%; }
+  .chrome { display: flex; gap: 6px; padding: 9px 12px; background: #f4f4f4; border-bottom: 1px solid #e6e6e6; }
+  .chrome i { width: 9px; height: 9px; border-radius: 50%; background: #d9d9d9; }
+  .frame img { width: 100%; height: auto; }
+  :global([data-tilt]:hover) .frame { left: 8%; top: 10%; }
+
+  /* Fan of phones */
+  .phones { position: absolute; inset: 0; display: grid; place-items: center; }
+  .phone {
+    --n: 0;
+    position: absolute;
+    width: 26%;
+    top: 16%;
+    border-radius: 16px;
+    padding: 5px;
+    background: #111;
+    box-shadow: 0 30px 50px -20px rgb(40 0 0 / 0.55);
+    transform: translateX(calc(var(--n) * 62%)) translateY(calc(var(--n) * var(--n) * 7%)) rotate(calc(var(--n) * 7deg));
+    transition: transform 0.9s var(--ease-out);
+    overflow: hidden;
+  }
+  .phone:nth-child(2) { z-index: 1; top: 12%; }
+  .phone img { width: 100%; height: auto; border-radius: 11px; }
+  .cover--hero .phone { width: 22%; top: 12%; }
+  :global([data-tilt]:hover) .phone {
+    transform: translateX(calc(var(--n) * 82% + var(--mx) * 12px)) translateY(calc(var(--n) * var(--n) * 4% - 3%)) rotate(calc(var(--n) * 10deg));
+  }
+</style>

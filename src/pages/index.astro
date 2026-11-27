@@ -1,16 +1,211 @@
 ---
 import Base from '../layouts/Base.astro';
-import Hero from '../components/Hero.astro';
-import FeaturedCard from '../components/FeaturedCard.astro';
-import ResourceGrid from '../components/ResourceGrid.astro';
-import EmailSignup from '../components/EmailSignup.astro';
-import { featured } from '../lib/resources';
+import WorkCard from '../components/WorkCard.astro';
+import { work } from '../data/work';
+import { resources, hrefFor } from '../lib/resources';
+import { SITE } from '../site.config';
+
+const split = (text: string) => text.split(' ');
+const lab = [
+  ...resources.filter((r) => r.status === 'live'),
+  ...resources.filter((r) => r.status !== 'live' && r.type === 'page'),
+];
 ---
-<Base backLink={false}>
-  <div class="wrap">
-    <Hero />
-    {featured && <FeaturedCard resource={featured} />}
-    <ResourceGrid />
-    <EmailSignup />
+<Base backLink={false} footer="contact">
+  <section class="hero wrap-wide" aria-labelledby="hero-title">
+    <div class="bg" aria-hidden="true"><span class="blob b1"></span><span class="blob b2"></span></div>
+
+    <p class="status fade-up" style="--base:100ms"><span class="dot" aria-hidden="true"></span>{SITE.location} · open to interesting projects</p>
+    <h1 id="hero-title" class="name words">
+      {split(SITE.name).map((w, i) => <span class="w" style={`--i:${i};--base:150ms`}><span>{w}</span></span>)}
+    </h1>
+    <p class="role words">
+      {[...split(SITE.role), `(${SITE.roleDetail})`].map((w, i) => <span class="w" style={`--i:${i};--base:350ms`}><span>{w}</span></span>)}
+    </p>
+    <div class="intro fade-up" style="--base:650ms">
+      <p>
+        I’m Tian, a product designer crafting elegant, intuitive experiences through a blend of systems
+        thinking, first-principles design, and AI-enabled workflows. I break complex problems down to their
+        core and turn them into experiences that feel effortless, purposeful, and easy to use.
+      </p>
+    </div>
+    <div class="ctas fade-up" style="--base:800ms">
+      <a class="btn" href="#work">See my work <span class="arrow" aria-hidden="true">↓</span></a>
+      <a class="btn btn--ghost" href="#contact">Get in touch</a>
+    </div>
+  </section>
+
+  <div class="marquee" aria-hidden="true">
+    <div class="track">
+      {[0, 1].map(() => (
+        <ul>{SITE.marquee.map((t) => <li>{t}</li>)}</ul>
+      ))}
+    </div>
   </div>
+
+  <section id="work" class="work wrap-wide" aria-labelledby="work-title">
+    <header class="section-head">
+      <div>
+        <p class="eyebrow" data-reveal>Selected work</p>
+        <h2 id="work-title" data-reveal style="--d:80ms">Case studies</h2>
+      </div>
+      <a class="deck" href={SITE.recentWorkDeck} target="_blank" rel="noopener" data-reveal style="--d:160ms">
+        <span class="deck-label">New</span>
+        <span>Recent work deck</span>
+        <span aria-hidden="true">↗</span><span class="sr-only">(opens Figma in a new tab)</span>
+      </a>
+    </header>
+    <ul class="grid">
+      {work.map((s, i) => <WorkCard study={s} index={i} />)}
+    </ul>
+  </section>
+
+  <section id="lab" class="lab wrap-wide" aria-labelledby="lab-title">
+    <header class="section-head">
+      <div>
+        <p class="eyebrow" data-reveal>Lab</p>
+        <h2 id="lab-title" data-reveal style="--d:80ms">Things I’m building</h2>
+      </div>
+      <p class="section-sub" data-reveal style="--d:160ms">Side projects, AI experiments and free tools. Designed, built and shipped by me.</p>
+    </header>
+    <ul class="lab-grid" data-stagger="90">
+      {lab.map((r) => {
+        const href = hrefFor(r);
+        const Tag = href ? 'a' : 'div';
+        return (
+          <li data-reveal>
+            <Tag class:list={['lab-card', { soon: !href }]} {...(href ? { href } : {})}>
+              <img src={r.thumbnail} alt="" width="64" height="64" loading="lazy" />
+              <span class="lab-tag">{href ? 'Live' : 'In progress'} · {r.tag}</span>
+              <span class="lab-title">{r.title}</span>
+              <span class="lab-sub">{r.subtitle}</span>
+              {href && <span class="lab-go" aria-hidden="true">→</span>}
+            </Tag>
+          </li>
+        );
+      })}
+      <li data-reveal>
+        <a class="lab-card lab-card--links" href="/links">
+          <span class="lab-avatar"><img src={SITE.avatar} alt="" width="64" height="64" loading="lazy" /></span>
+          <span class="lab-tag">{SITE.handle}</span>
+          <span class="lab-title">Link in bio</span>
+          <span class="lab-sub">{SITE.tagline}. Every free resource from my reels in one place.</span>
+          <span class="lab-go" aria-hidden="true">→</span>
+        </a>
+      </li>
+    </ul>
+  </section>
+
+  <section id="about" class="about wrap-wide" aria-labelledby="about-title">
+    <div class="photo" data-reveal="scale">
+      <img src={SITE.photo} alt={`Portrait of ${SITE.name}`} width="1200" height="1600" loading="lazy" />
+    </div>
+    <div class="about-text">
+      <p class="eyebrow" data-reveal>About</p>
+      <h2 id="about-title" data-reveal style="--d:80ms">Hey there, I’m Tian.</h2>
+      <div class="prose" data-reveal style="--d:160ms">
+        <p>
+          I’m an APAC-based product designer with years of work across wealth management, banking, asset
+          management and e-commerce: dense, high-stakes products where clarity matters.
+        </p>
+        <p>
+          Lately I’ve been folding AI into how I work, and building my own tools along the way. Outside of
+          design, I’m always happy to chat about interesting projects, or dive into personal passions:
+        </p>
+      </div>
+      <ul class="chips" data-stagger="60">
+        {['Free-diving', 'Fitness', 'Photography', 'Travel · 25+ countries'].map((c) => <li data-reveal>{c}</li>)}
+      </ul>
+    </div>
+  </section>
 </Base>
+
+<style>
+  /* Hero */
+  .hero { position: relative; padding-top: clamp(3rem, 10vw, 8rem); padding-bottom: clamp(3rem, 8vw, 6rem); }
+  .bg { position: absolute; top: -6rem; bottom: 0; left: 50%; width: 100vw; transform: translateX(-50%); z-index: -1; overflow: hidden; pointer-events: none;
+    background-image: radial-gradient(rgb(26 26 26 / 0.09) 1px, transparent 1px);
+    background-size: 22px 22px;
+    mask-image: radial-gradient(60% 70% at 72% 35%, #000 0%, transparent 80%);
+  }
+  .blob { position: absolute; border-radius: 50%; filter: blur(70px); opacity: 0.5; animation: drift 18s var(--ease-in-out) infinite alternate; }
+  .b1 { width: 34rem; height: 34rem; right: -6rem; top: 0; background: #b9c4f2; }
+  .b2 { width: 22rem; height: 22rem; right: 18rem; top: 14rem; background: #dfe4f7; animation-duration: 24s; animation-direction: alternate-reverse; }
+  @keyframes drift { from { transform: translate(0, 0) scale(1); } to { transform: translate(-5rem, 3rem) scale(1.12); } }
+
+  .status { display: inline-flex; align-items: center; gap: 0.6rem; font-size: 0.875rem; font-weight: 500; color: var(--ink-2);
+    padding: 0.4rem 0.9rem 0.4rem 0.7rem; border-radius: 999px; background: rgb(255 255 255 / 0.7); box-shadow: var(--shadow-sm); }
+  .dot { position: relative; width: 8px; height: 8px; border-radius: 50%; background: #2fa36b; }
+  .dot::after { content: ''; position: absolute; inset: 0; border-radius: 50%; background: inherit; animation: ping 2.4s var(--ease-out) infinite; }
+  @keyframes ping { 0% { transform: scale(1); opacity: 0.6; } 100% { transform: scale(3); opacity: 0; } }
+
+  .name { font-size: clamp(4rem, 14vw, 9.5rem); letter-spacing: -0.055em; line-height: 0.95; margin-top: 1.5rem; }
+  .role { font-size: clamp(1.75rem, 4.6vw, 3.75rem); font-weight: 700; letter-spacing: -0.035em; line-height: 1.1; color: var(--accent); margin-top: 0.75rem; }
+  .intro { max-width: 40rem; margin-top: 2rem; font-size: clamp(1.125rem, 1.6vw, 1.3rem); line-height: 1.55; color: var(--ink-2); }
+  .ctas { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 2.25rem; }
+
+  /* Marquee */
+  .marquee { overflow: hidden; border-block: 1px solid var(--line); padding: 1rem 0;
+    mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent); }
+  .track { display: flex; width: max-content; animation: marquee 40s linear infinite; }
+  .marquee:hover .track { animation-play-state: paused; }
+  .track ul { display: flex; list-style: none; margin: 0; padding: 0; }
+  .track li { padding: 0 1.5rem; font-size: 1.125rem; font-weight: 500; color: var(--ink-3); white-space: nowrap; display: flex; align-items: center; gap: 3rem; }
+  .track li::after { content: '✦'; font-size: 0.75rem; color: var(--accent); margin-left: 1.5rem; }
+  @keyframes marquee { to { transform: translateX(-50%); } }
+
+  /* Sections */
+  .section-head { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 1rem 2rem; margin-bottom: clamp(2rem, 5vw, 3.5rem); }
+  .section-head h2 { font-size: clamp(2.25rem, 5.5vw, 4rem); letter-spacing: -0.045em; margin-top: 0.6rem; }
+  .section-sub { max-width: 26rem; color: var(--ink-2); }
+
+  .work { padding-top: clamp(4rem, 10vw, 8rem); scroll-margin-top: 2rem; }
+  .deck { display: inline-flex; align-items: center; gap: 0.6rem; min-height: 2.75rem; padding: 0.35rem 1rem 0.35rem 0.4rem; border-radius: 999px;
+    background: var(--surface); box-shadow: var(--shadow-sm); text-decoration: none; font-weight: 600; font-size: 0.9375rem;
+    transition: transform 0.3s var(--ease-out), box-shadow 0.3s; }
+  .deck:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+  .deck-label { padding: 0.3rem 0.65rem; border-radius: 999px; background: var(--accent); color: #fff; font-size: 0.75rem; letter-spacing: 0.04em; }
+
+  .grid { display: grid; gap: clamp(3rem, 6vw, 4.5rem) clamp(1.5rem, 3vw, 2.5rem); margin: 0; padding: 0; }
+  @media (min-width: 52rem) {
+    .grid { grid-template-columns: 1fr 1fr; padding-bottom: 7rem; }
+    .grid > :global(li:nth-child(even)) { position: relative; top: 7rem; }
+  }
+
+  /* Lab */
+  .lab { padding-top: clamp(5rem, 12vw, 9rem); scroll-margin-top: 2rem; }
+  .lab-grid { display: grid; gap: 1rem; list-style: none; margin: 0; padding: 0; grid-template-columns: repeat(auto-fill, minmax(15.5rem, 1fr)); }
+  .lab-grid > li { display: flex; }
+  .lab-card { position: relative; display: flex; flex-direction: column; width: 100%; padding: 1.5rem; border-radius: var(--radius);
+    background: var(--surface); box-shadow: var(--shadow-sm); text-decoration: none; color: var(--ink);
+    transition: transform 0.5s var(--ease-out), box-shadow 0.5s var(--ease-out); }
+  a.lab-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+  .lab-card img { width: 3.5rem; height: 3.5rem; border-radius: 14px; transition: transform 0.6s var(--ease-out); }
+  a.lab-card:hover img { transform: rotate(-6deg) scale(1.06); }
+  .soon { background: transparent; box-shadow: inset 0 0 0 1.5px var(--line); }
+  .soon img { filter: grayscale(0.7); opacity: 0.6; }
+  .lab-tag { margin-top: 1.75rem; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); }
+  a.lab-card .lab-tag { color: var(--accent); }
+  .lab-title { margin-top: 0.4rem; font-size: 1.375rem; font-weight: 700; letter-spacing: -0.025em; }
+  .lab-sub { margin-top: 0.35rem; color: var(--ink-2); font-size: 0.9375rem; line-height: 1.5; }
+  .lab-go { position: absolute; top: 1.4rem; right: 1.5rem; font-size: 1.25rem; color: var(--ink-3); transition: transform 0.4s var(--ease-out), color 0.2s; }
+  a.lab-card:hover .lab-go { transform: translateX(4px); color: var(--accent); }
+  .lab-card--links { background: var(--ink); color: #fff; }
+  .lab-card--links .lab-tag { color: #aab6ec !important; }
+  .lab-card--links .lab-sub { color: #c9c9c9; }
+  .lab-card--links .lab-go { color: #fff; }
+  .lab-avatar img { border-radius: 50%; object-fit: cover; }
+
+  /* About */
+  .about { display: grid; gap: clamp(2rem, 5vw, 5rem); align-items: center; padding-top: clamp(5rem, 12vw, 9rem); scroll-margin-top: 2rem; }
+  @media (min-width: 48rem) { .about { grid-template-columns: 0.8fr 1fr; } }
+  .photo { overflow: hidden; border-radius: calc(var(--radius) + 6px); aspect-ratio: 4 / 5; max-width: 28rem; background: var(--line); }
+  .photo img { width: 100%; height: 100%; object-fit: cover; transform: scale(1.08); transition: transform 1.6s var(--ease-out); }
+  .photo.is-in img, .photo:hover img { transform: scale(1); }
+  .about-text h2 { font-size: clamp(2.25rem, 5vw, 3.5rem); letter-spacing: -0.045em; margin-top: 0.6rem; }
+  .about-text .prose { margin-top: 1.5rem; font-size: 1.125rem; color: var(--ink-2); max-width: 36rem; }
+  .chips { display: flex; flex-wrap: wrap; gap: 0.5rem; list-style: none; margin: 1.5rem 0 0; padding: 0; }
+  .chips li { padding: 0.55rem 1rem; border-radius: 999px; background: var(--surface); box-shadow: var(--shadow-sm); font-weight: 500; font-size: 0.9375rem;
+    transition: transform 0.3s var(--ease-out), background-color 0.2s, color 0.2s; }
+  .chips li:hover { transform: translateY(-2px) rotate(-2deg); background: var(--accent); color: #fff; }
+</style>

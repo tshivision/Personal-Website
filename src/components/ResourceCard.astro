@@ -38,15 +38,17 @@ const linkProps = href
     border-radius: var(--radius);
     text-decoration: none;
     color: var(--ink);
-    transition: border-color 0.15s, transform 0.15s;
+    transition: border-color 0.2s, transform 0.4s var(--ease-out), box-shadow 0.4s var(--ease-out);
   }
-  a.card:hover { border-color: var(--accent); }
+  a.card:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: var(--shadow-sm); }
+  .arrow { transition: transform 0.3s var(--ease-out); }
+  a.card:hover .arrow { transform: translateX(4px); }
   a.card:active { transform: scale(0.99); }
   .card--soon { background: transparent; border-style: dashed; border-color: var(--line-strong); }
   .card--soon .thumb { opacity: 0.55; filter: grayscale(0.6); }
   .thumb { flex: none; width: 3.5rem; height: 3.5rem; border-radius: var(--radius-sm); }
   .body { display: flex; flex-direction: column; min-width: 0; flex: 1; }
-  .title { font: 600 1.125rem/1.25 var(--serif); }
+  .title { font: 700 1.125rem/1.25 var(--sans); letter-spacing: -0.015em; }
   .sub { font-size: 0.9375rem; color: var(--ink-2); line-height: 1.4; margin-top: 0.15rem; }
   .meta {
     display: flex;

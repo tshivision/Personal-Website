@@ -1,0 +1,53 @@
+---
+import Cover from './Cover.astro';
+import type { CaseStudy } from '../data/work';
+interface Props { study: CaseStudy; index: number }
+const { study: s, index } = Astro.props;
+---
+<li class="item" data-reveal style={`--d:${(index % 2) * 120}ms`}>
+  <a class="card" href={`/work/${s.slug}`} data-tilt>
+    <Cover study={s} eager={index < 2} />
+    <div class="meta">
+      <p class="kicker"><span>{s.client}</span><span aria-hidden="true">·</span><span>{s.industry}</span></p>
+      <h3>{s.title}</h3>
+      <p class="summary">{s.summary}</p>
+    </div>
+    <span class="go" aria-hidden="true">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg>
+    </span>
+  </a>
+</li>
+
+<style>
+  .item { list-style: none; }
+  .card {
+    position: relative;
+    display: block;
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .card :global(.cover) {
+    transition: transform 0.7s var(--ease-out), box-shadow 0.7s var(--ease-out), border-radius 0.7s var(--ease-out);
+  }
+  .card:hover :global(.cover) { transform: translateY(-6px); box-shadow: var(--shadow-lg); }
+  .meta { padding: 1.25rem 0.25rem 0; }
+  .kicker {
+    display: flex; flex-wrap: wrap; gap: 0.4rem;
+    font-size: 0.8125rem; font-weight: 600; letter-spacing: 0.02em; color: var(--ink-3);
+  }
+  .kicker span:first-child { color: var(--accent); }
+  h3 { font-size: clamp(1.5rem, 2.4vw, 1.875rem); margin-top: 0.4rem; letter-spacing: -0.03em; }
+  .summary { margin-top: 0.5rem; color: var(--ink-2); font-size: 1rem; max-width: 34rem; }
+
+  .go {
+    position: absolute; top: 1rem; right: 1rem; z-index: 3;
+    display: grid; place-items: center;
+    width: 3rem; height: 3rem; border-radius: 50%;
+    background: #fff; color: var(--ink);
+    box-shadow: var(--shadow-sm);
+    opacity: 0; transform: scale(0.6) rotate(-45deg);
+    transition: opacity 0.4s var(--ease-out), transform 0.5s var(--ease-out);
+  }
+  .card:hover .go, .card:focus-visible .go { opacity: 1; transform: none; }
+  @media (hover: none) { .go { opacity: 1; transform: none; width: 2.5rem; height: 2.5rem; } }
+</style>

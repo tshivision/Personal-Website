@@ -1,0 +1,26 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": "astro",
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "cleanUrls": true,
+  "redirects": [
+    { "source": "/p/02df2ed8", "destination": "/work/purefacts-dashboard", "permanent": true },
+    { "source": "/p/4fdb05c0", "destination": "/work/sales-enablement", "permanent": true },
+    { "source": "/p/02ab2d37", "destination": "/work/pershingx-fee-billing", "permanent": true },
+    { "source": "/p/02d6226f", "destination": "/work/wbi-digital-onboarding", "permanent": true },
+    { "source": "/p/03a9130c", "destination": "/work/zoom", "permanent": true },
+    { "source": "/p/035c99a6", "destination": "/work/costco", "permanent": true },
+    { "source": "/p/:id", "destination": "/#work", "permanent": false }
+  ],
+  "headers": [
+    {
+      "source": "/_astro/(.*)",
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }]
+    },
+    {
+      "source": "/(work|thumbs)/(.*)",
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=604800" }]
+    }
+  ]
+}
